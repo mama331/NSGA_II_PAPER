@@ -1,0 +1,140 @@
+D:\Anaconda3\python.exe "D:/Python Project/MWSNs2/MWSNs.py"
+........ 90 - 100 ..............
+Algo 0 0
+Time:  0.07999682426452637
+Algo 1 3.891998
+Time:  0.46500396728515625
+Algo UpDateFlow 9.204154
+Time:  1.2119998931884766
+Solution:
+Objective value = 9.204153621389139
+Algo LpUpDateFlow 9.204154
+Time:  0.5659997463226318
+........ 90 - 160 ..............
+Algo 0 24.21077
+Time:  0.1679983139038086
+Algo 1 37.727154
+Time:  0.5769937038421631
+Algo UpDateFlow 50.86635
+Time:  3.949007034301758
+ nV:  19  nS:  70
+Solution:
+Objective value = 52.40210052649595
+ nV:  23  nS:  90
+Solution:
+Objective value = 54.72189248842269
+Algo LpUpDateFlow 52.402101
+Time:  7.063000917434692
+........ 90 - 220 ..............
+Algo 0 30.0
+Time:  0.29899144172668457
+Algo 1 61.726632
+Time:  0.7090094089508057
+Algo UpDateFlow 73.907383
+Time:  7.649001121520996
+ nV:  15  nS:  82
+Solution:
+Objective value = 84.83918573684015
+ nV:  14  nS:  73
+Solution:
+Objective value = 91.4216977964555
+ nV:  13  nS:  65
+Solution:
+Objective value = 77.48651436587315
+Algo LpUpDateFlow 77.486514
+Time:  21.161999464035034
+........ 90 - 280 ..............
+Algo 0 52.934542
+Time:  0.5430009365081787
+Algo 1 82.386847
+Time:  0.9299993515014648
+Algo UpDateFlow 87.83242
+Time:  12.738999605178833
+ nV:  9  nS:  82
+Solution:
+Objective value = 134.979333625505
+ nV:  9  nS:  63
+Solution:
+Objective value = 107.48651436587309
+ nV:  14  nS:  81
+Solution:
+Objective value = 109.4176527145618
+ nV:  10  nS:  54
+Solution:
+Objective value = 102.44598728760474
+Algo LpUpDateFlow 102.445987
+Time:  21.123000621795654
+........ 90 - 340 ..............
+Algo 0 70.076948
+Time:  0.675999641418457
+Algo 1 99.642766
+Time:  1.0080010890960693
+Algo UpDateFlow 119.295068
+Time:  18.475999116897583
+ nV:  9  nS:  98
+Solution:
+Objective value = 155.11278421339424
+ nV:  9  nS:  73
+Solution:
+Objective value = 133.1799906703413
+ nV:  14  nS:  100
+Solution:
+Objective value = 139.45678287813277
+ nV:  10  nS:  69
+Solution:
+Objective value = 135.3940560146985
+Algo LpUpDateFlow 133.179991
+Time:  29.017003059387207
+........ 90 - 400 ..............
+Algo 0 90.0
+Time:  0.9329988956451416
+Algo 1 120.021382
+Time:  1.160001277923584
+Algo UpDateFlow 135.957033
+Time:  25.7069993019104
+ nV:  9  nS:  114
+100
+Solution:
+Objective value = 173.03779157305948
+ nV:  9  nS:  87
+Solution:
+Objective value = 165.39425635161592
+ nV:  14  nS:  115
+100
+Solution:
+Objective value = 154.94353556395032
+ nV:  10  nS:  84
+Solution:
+Objective value = 170.20245846917052
+Algo LpUpDateFlow 154.943536
+Time:  59.8560004234314
+[0, 24.21077, 30.0, 52.934542, 70.076948, 90.0]
+0
+24.21077
+30.0
+52.934542
+70.076948
+90.0
+[3.891998, 37.727154, 61.726632, 82.386847, 99.642766, 120.021382]
+3.891998
+37.727154
+61.726632
+82.386847
+99.642766
+120.021382
+[9.204154, 50.86635, 73.907383, 87.83242, 119.295068, 135.957033]
+9.204154
+50.86635
+73.907383
+87.83242
+119.295068
+135.957033
+[9.204154, 52.402101, 77.486514, 102.445987, 133.179991, 154.943536]
+9.204154
+52.402101
+77.486514
+102.445987
+133.179991
+154.943536
+
+Process finished with exit code 0

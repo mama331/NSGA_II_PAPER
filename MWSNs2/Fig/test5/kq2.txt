@@ -1,0 +1,192 @@
+D:\Anaconda3\python.exe "D:/Python Project/MWSNs2/MWSNs.py"
+........ 30 - 340 ..............
+Algo 0 94.369532
+Time:  0.5468683242797852
+Algo 1 114.928096
+Time:  0.26563048362731934
+Algo UpDateFlow 140.259245
+Time:  6.437495708465576
+ nV:  12  nS:  172
+101
+Solution:
+Objective value = 190.70079389854203
+ nV:  13  nS:  168
+100
+Solution:
+Objective value = 140.2592446244592
+Algo LpUpDateFlow 140.259245
+Time:  6.578142166137695
+........ 60 - 340 ..............
+Algo 0 70.910663
+Time:  0.5781090259552002
+Algo 1 114.928096
+Time:  0.5312597751617432
+Algo UpDateFlow 128.970595
+Time:  12.781241178512573
+ nV:  14  nS:  106
+100
+Solution:
+Objective value = 157.31810031774805
+ nV:  10  nS:  136
+100
+Solution:
+Objective value = 193.2270663927131
+ nV:  11  nS:  98
+Solution:
+Objective value = 140.25924462445923
+Algo LpUpDateFlow 140.259245
+Time:  28.9375
+........ 90 - 340 ..............
+Algo 0 70.076948
+Time:  0.6249942779541016
+Algo 1 99.642766
+Time:  0.9062550067901611
+Algo UpDateFlow 119.295068
+Time:  19.046867847442627
+ nV:  9  nS:  98
+Solution:
+Objective value = 155.11278421339424
+ nV:  9  nS:  73
+Solution:
+Objective value = 133.1799906703413
+ nV:  14  nS:  100
+Solution:
+Objective value = 139.45678287813277
+ nV:  10  nS:  69
+Solution:
+Objective value = 135.3940560146985
+Algo LpUpDateFlow 133.179991
+Time:  29.26061749458313
+........ 120 - 340 ..............
+Algo 0 62.219647
+Time:  0.6406199932098389
+Algo 1 88.853845
+Time:  1.4062528610229492
+Algo UpDateFlow 100.803776
+Time:  24.14062786102295
+ nV:  17  nS:  100
+Solution:
+Objective value = 113.49639515791941
+ nV:  11  nS:  87
+Solution:
+Objective value = 126.13170059070887
+ nV:  7  nS:  49
+Solution:
+Objective value = 104.33405909563817
+ nV:  9  nS:  57
+Solution:
+Objective value = 126.50434149953009
+ nV:  7  nS:  47
+Solution:
+Objective value = 124.08192832529959
+Algo LpUpDateFlow 104.334059
+Time:  116.09356141090393
+........ 150 - 340 ..............
+Algo 0 57.496066
+Time:  0.6609907150268555
+Algo 1 81.38171
+Time:  2.092000722885132
+Algo UpDateFlow 86.669588
+Time:  24.596010208129883
+ nV:  14  nS:  95
+Solution:
+Objective value = 121.5857243744493
+ nV:  8  nS:  40
+Solution:
+Objective value = 102.74784093554155
+ nV:  10  nS:  70
+Solution:
+Objective value = 124.89145666746892
+ nV:  15  nS:  86
+Solution:
+Objective value = 106.01645716743292
+ nV:  9  nS:  49
+Solution:
+Objective value = 91.60686711025102
+Algo LpUpDateFlow 91.606867
+Time:  44.58599591255188
+........ 180 - 340 ..............
+Algo 0 52.935019
+Time:  0.707996129989624
+Algo 1 77.676889
+Time:  3.0440011024475098
+Algo UpDateFlow 86.574954
+Time:  29.27699899673462
+ nV:  9  nS:  55
+Solution:
+Objective value = 111.59852570499064
+ nV:  12  nS:  54
+Solution:
+Objective value = 93.92761725172684
+ nV:  14  nS:  87
+Solution:
+Objective value = 106.39031516292115
+ nV:  13  nS:  83
+Solution:
+Objective value = 108.0466064500991
+ nV:  11  nS:  61
+Solution:
+Objective value = 88.35091306323886
+Algo LpUpDateFlow 88.350913
+Time:  53.10899901390076
+........ 210 - 340 ..............
+Algo 0 40.422098
+Time:  0.7360038757324219
+Algo 1 71.316656
+Time:  4.3829967975616455
+Algo UpDateFlow 79.174255
+Time:  32.09999966621399
+ nV:  13  nS:  87
+Solution:
+Objective value = 103.1975351000169
+ nV:  10  nS:  44
+Solution:
+Objective value = 83.35566963078196
+ nV:  10  nS:  55
+Solution:
+Objective value = 100.14807033446334
+ nV:  7  nS:  42
+Solution:
+Objective value = 110.49315205772946
+ nV:  13  nS:  63
+Solution:
+Objective value = 86.42630713989323
+ nV:  10  nS:  49
+Solution:
+Objective value = 83.55510420421254
+Algo LpUpDateFlow 83.35567
+Time:  59.83800530433655
+[94.369532, 70.910663, 70.076948, 62.219647, 57.496066, 52.935019, 40.422098]
+94.369532
+70.910663
+70.076948
+62.219647
+57.496066
+52.935019
+40.422098
+[114.928096, 114.928096, 99.642766, 88.853845, 81.38171, 77.676889, 71.316656]
+114.928096
+114.928096
+99.642766
+88.853845
+81.38171
+77.676889
+71.316656
+[140.259245, 128.970595, 119.295068, 100.803776, 86.669588, 86.574954, 79.174255]
+140.259245
+128.970595
+119.295068
+100.803776
+86.669588
+86.574954
+79.174255
+[140.259245, 140.259245, 133.179991, 104.334059, 91.606867, 88.350913, 83.35567]
+140.259245
+140.259245
+133.179991
+104.334059
+91.606867
+88.350913
+83.35567
+
+Process finished with exit code 0
