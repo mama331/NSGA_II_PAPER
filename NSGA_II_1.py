@@ -557,4 +557,22 @@ class NSGA:
         self.print_final_solution(out_path)
 
 if __name__ == "__main__":
-    pass
+    Point.rs = 50
+    list_sensors = []
+    list_targets = []
+    with open("data/random_data/200/sensor.txt", "r") as f:
+        _data = f.read().split("\n")
+    _data = [data for data in _data if len(data) > 1]
+    for data in _data:
+        a = data.split("\t")
+        list_sensors.append(Point(float(a[0]), float(a[1])))
+
+    with open("data/random_data/200/target.txt", "r") as f:
+        _data = f.read().split("\n")
+    _data = [data for data in _data if len(data) > 1]
+    for data in _data:
+        a = data.split("\t")
+        list_targets.append(Point(float(a[0]), float(a[1])))
+    for i in range(1):
+        test = NSGA(list_sensors=list_sensors, list_targets=list_targets)
+        test.run("1.txt")
