@@ -21,7 +21,7 @@ def draw_data_max_move(data, out_path, labels, name_data):
     fig.subplots_adjust(left=0)
     WH = max(max(data[0]), max(data[1])) + 1000
     ax = fig.add_subplot(111)
-    # ax = fig.add_axes([0,0,1,1])
+    # ax = fig_dataset.add_axes([0,0,1,1])
     ax.set_ylim(0, WH)
     X = np.arange(len(data[0]))
     tt1 = ax.bar(X - 0.125, data[0], color="g", width=0.25, label="ENSGA-II")
@@ -51,7 +51,7 @@ def draw_data_sum_move(data, out_path, labels, name_data):
     fig.subplots_adjust(left=0)
     WH = max(max(data[0]), max(data[1])) + 40000
     ax = fig.add_subplot(111)
-    # ax = fig.add_axes([0,0,1,1])
+    # ax = fig_dataset.add_axes([0,0,1,1])
     ax.set_ylim(0, WH)
     X = np.arange(len(data[0]))
     tt1 = ax.bar(X - 0.125, data[0], color="g", width=0.25, label="ENSGA-II")

@@ -31,7 +31,7 @@ def draw_tt1(data, out_path):
     )
     fig = plt.figure(figsize=(8, 8))
     ax = plt.gca()
-    # fig.tight_layout()
+    # fig_dataset.tight_layout()
     sum_move_nsga = data[1]["sum_move"].tolist()
     max_move_nsga = data[1]["max_move"].tolist()
     # =============================================================================

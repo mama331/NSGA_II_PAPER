@@ -48,7 +48,7 @@ class Sensor(Point):
 # ------------------------------------------
 def get_ax(title, WH):
     fig = plt.figure(figsize=(8, 8))
-    # fig = plt.figure()
+    # fig_dataset = plt.figure()
     ax = fig.add_subplot(111)
     ax.set_xlim(0, WH)
     ax.set_ylim(0, WH)

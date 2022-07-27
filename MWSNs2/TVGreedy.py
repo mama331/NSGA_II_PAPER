@@ -113,24 +113,24 @@ class TVGreedyWSNs:
 def main(WSNs):
     vor = WSNs.make_vor()
     WSNs.find_osg()
-    for i in range(WSNs.nTargets):
+    for i in range(WSNs.n_targets):
         WSNs.find_chief(i)
 
     ax = TSClass.get_ax("Check", 100)
     # voronoi_plot_2d(vor, ax)
     ax.set_xlim(0, 1000)
     ax.set_ylim(0, 1000)
-    TSClass.draw_list(WSNs.listTargets, ax, c="b")
+    TSClass.draw_list(WSNs.list_targets, ax, c="b")
     # TSClass.draw_rs_list(WSNs.listTargets, ax, c='b')
-    TSClass.draw_list(WSNs.listSensors, ax, c="g")
+    TSClass.draw_list(WSNs.list_sensors, ax, c="g")
     # TSClass.draw_id(WSNs.listTargets, ax, 'b', 't')
     # TSClass.draw_id(WSNs.listSensors, ax, 'g', 's')
 
     # total movement
     total = 0
     max_dis = 0
-    for i in range(WSNs.nTargets):
-        t = WSNs.listTargets[i]
+    for i in range(WSNs.n_targets):
+        t = WSNs.list_targets[i]
         tMore = WSNs.listMore[i]
         if t.lifeTime == 0:
             csg = WSNs.find_csg(tMore.chiefId, tMore.neighborId)
@@ -142,7 +142,7 @@ def main(WSNs):
                 if s is None:
                     # control 2nd order neighbor or higher neighbor
                     nowNeighborId = tMore.neighborId
-                    passNeighbor = [False for _ in range(WSNs.nTargets)]
+                    passNeighbor = [False for _ in range(WSNs.n_targets)]
                     for i2 in nowNeighborId:
                         passNeighbor[i2] = True
                     passNeighbor[i] = True
@@ -165,7 +165,7 @@ def main(WSNs):
             total = total + s.get_distance(Dj)
             max_dis = max(max_dis, s.get_distance(Dj))
             ax.plot([s.x, Dj.x], [s.y, Dj.y], color="r")
-            listCoveredPoints = Dj.get_covered_points(WSNs.listTargets)
+            listCoveredPoints = Dj.get_covered_points(WSNs.list_targets)
             s.update_move(Dj)
             for t in listCoveredPoints:
                 t.lifeTime = 1

@@ -10,58 +10,67 @@ from Point import Point
 import TSClass
 import matplotlib.pyplot as plt
 import random
-import time
 import numpy as np
-import os
-import pickle
 from matplotlib.patches import Rectangle
+import matplotlib.font_manager as font_manager
 
 
 class NSGA:
-    def __init__(self, listTargets, listSensors):
-        self.nTargets = len(listTargets)
-        self.nSensors = len(listSensors)
-        self.listTargets = listTargets
-        self.listSensors = listSensors
-        self.ratio_mutation = 0.2
-        self.ratio_crossover = 0.8
-        self.ratio_crossover_different = 0.5
-        self.ratio_change = 0.8
-        self.num_loop = 500
-        self.num_gen = 200
-        self.solution = []  # quan the kha thi
-        self.solution_unfeasible = []  # quan the khong kha thi
+    def __init__(
+        self,
+        list_targets,
+        list_sensors,
+        ratio_mutation=0.2,
+        ratio_crossover=0.8,
+        ratio_crossover_different=0.5,
+        ratio_change=0.8,
+        num_loop=500,
+        num_gen=200,
+        ratio_heuristic_create=0.02,
+        ratio_create_heuristic_unfeasible=0.1,
+    ):
+        self.n_targets = len(list_targets)
+        self.n_sensors = len(list_sensors)
+        self.list_targets = list_targets
+        self.list_sensors = list_sensors
+        self.ratio_mutation = ratio_mutation
+        self.ratio_crossover = ratio_crossover
+        self.ratio_crossover_different = ratio_crossover_different
+        self.ratio_change = ratio_change
+        self.num_loop = num_loop
+        self.num_gen = num_gen
+        self.solution = []  # Feasible Population:
+        self.solution_infeasible = []  # Infeasible Population
         self.feasible_points = {}
         self.cost = {}
-        self.ratio_heuristic_create = 0.02
-        self.ratio_create_heuristic_unfeasible = 0.1
+        self.ratio_heuristic_create = ratio_heuristic_create
+        self.ratio_create_heuristic_unfeasible = ratio_create_heuristic_unfeasible
         self.cover_matrix = {}
         self.pareto_point = []
-        # self.final_solution = int
 
     def get_all_feasible_points(self):
         intersection_points = []
-        for i in range(self.nTargets):
-            for j in range(i, self.nTargets):
+        for i in range(self.n_targets):
+            for j in range(i, self.n_targets):
                 intersection_points.extend(
-                    Point.get_intersection(self.listTargets[i], self.listTargets[j])
+                    Point.get_intersection(self.list_targets[i], self.list_targets[j])
                 )
-        for i in self.listSensors:
-            for j in self.listTargets:
+        for i in self.list_sensors:
+            for j in self.list_targets:
                 self.feasible_points[(i, j)] = []
         for i in intersection_points:
-            for j in self.listTargets:
+            for j in self.list_targets:
                 if Point.is_cover(i, j):
-                    for k in self.listSensors:
+                    for k in self.list_sensors:
                         self.feasible_points[(k, j)].append(i)
-        for i in self.listTargets:
-            for j in self.listSensors:
+        for i in self.list_targets:
+            for j in self.list_sensors:
                 self.feasible_points[(j, i)].append(Point.insect_points(i, j))
         return 1
 
     def get_cost_move(self):
-        for i in self.listSensors:
-            for j in self.listTargets:
+        for i in self.list_sensors:
+            for j in self.list_targets:
                 for k in self.feasible_points[(i, j)]:
                     self.cost[i, k] = Point.get_distance(i, k)
         return 1
@@ -73,21 +82,21 @@ class NSGA:
         for i in cover_points:
             self.cover_matrix[i] = []
         for i in cover_points:
-            for j in self.listTargets:
+            for j in self.list_targets:
                 if Point.is_cover(i, j):
                     self.cover_matrix[i].append(j)
         return 1
 
     def heuristic_create_individual(self):
-        a = [i for i in range(self.nTargets)]
-        sensors = self.listSensors.copy()
-        targets = self.listTargets.copy()
+        a = [i for i in range(self.n_targets)]
+        sensors = self.list_sensors.copy()
+        targets = self.list_targets.copy()
         np.random.shuffle(a)
-        individual = [0 for i in range(self.nTargets)]
+        individual = [0 for i in range(self.n_targets)]
         for i in a:
             target = targets[i]
             sensor = Point.get_nearest_point(target, sensors)
-            feasible_points = self.feasible_points[(sensor, self.listTargets[i])]
+            feasible_points = self.feasible_points[(sensor, self.list_targets[i])]
             feasible_point = Point.get_nearest_point(sensor, feasible_points)
             individual[i] = (sensor, feasible_point)
             sensors.remove(sensor)
@@ -95,8 +104,8 @@ class NSGA:
 
     def random_create_individual(self):
         individual = []
-        sensors = self.listSensors.copy()
-        for i in self.listTargets:
+        sensors = self.list_sensors.copy()
+        for i in self.list_targets:
             sensor = random.choice(sensors)
             feasible_points = self.feasible_points[(sensor, i)]
             individual.append((sensor, random.choice(feasible_points)))
@@ -105,8 +114,8 @@ class NSGA:
 
     def heuristic_create_unfeasible_individual(self):
         individual = []
-        sensors = self.listSensors.copy()
-        for i in self.listTargets:
+        sensors = self.list_sensors.copy()
+        for i in self.list_targets:
             sensor = Point.get_nearest_point(i, sensors)
             feasible_points = self.feasible_points[(sensor, i)]
             # =============================================================================
@@ -123,8 +132,8 @@ class NSGA:
 
     def random_create_unfeasible_individual(self):
         individual = []
-        sensor = random.choice(self.listSensors)
-        for i in self.listTargets:
+        sensor = random.choice(self.list_sensors)
+        for i in self.list_targets:
             feasible_points = self.feasible_points[(sensor, i)]
             individual.append((sensor, random.choice(feasible_points)))
         return individual
@@ -138,18 +147,18 @@ class NSGA:
 
         for i in range(self.num_gen):
             if random.random() < self.ratio_create_heuristic_unfeasible:
-                self.solution_unfeasible.append(
+                self.solution_infeasible.append(
                     self.heuristic_create_unfeasible_individual()
                 )
             else:
-                self.solution_unfeasible.append(
+                self.solution_infeasible.append(
                     self.random_create_unfeasible_individual()
                 )
         return 1
 
     def crossover(self, individual1, individual2, k):
-        a = individual1[0:k] + individual2[k : self.nTargets]
-        b = individual2[0:k] + individual1[k : self.nTargets]
+        a = individual1[0:k] + individual2[k: self.n_targets]
+        b = individual2[0:k] + individual1[k: self.n_targets]
         return [a, b]
 
     def run_crossover(self):
@@ -157,34 +166,34 @@ class NSGA:
         for i in range(0, len(self.solution)):
             if random.random() < self.ratio_crossover:
                 if random.random() < self.ratio_crossover_different:
-                    k = random.randint(0, self.nTargets)
-                    a = random.choice(self.solution_unfeasible)
+                    k = random.randint(0, self.n_targets)
+                    a = random.choice(self.solution_infeasible)
                     datas.extend(self.crossover(self.solution[i], a, k))
                 else:
-                    k = random.randint(0, self.nTargets - 1)
+                    k = random.randint(0, self.n_targets - 1)
                     a = random.choice(self.solution)
                     datas.extend(self.crossover(self.solution[i], a, k))
 
-        for i in range(0, len(self.solution_unfeasible)):
+        for i in range(0, len(self.solution_infeasible)):
             if random.random() < self.ratio_crossover:
                 if random.random() < self.ratio_crossover_different:
-                    k = random.randint(0, self.nTargets - 1)
+                    k = random.randint(0, self.n_targets - 1)
                     a = random.choice(self.solution)
-                    datas.extend(self.crossover(self.solution_unfeasible[i], a, k))
+                    datas.extend(self.crossover(self.solution_infeasible[i], a, k))
                 else:
-                    k = random.randint(0, self.nTargets - 1)
-                    a = random.choice(self.solution_unfeasible)
-                    datas.extend(self.crossover(self.solution_unfeasible[i], a, k))
+                    k = random.randint(0, self.n_targets - 1)
+                    a = random.choice(self.solution_infeasible)
+                    datas.extend(self.crossover(self.solution_infeasible[i], a, k))
         return datas
 
     def mutate(self, individual):
-        k = random.randint(0, self.nTargets - 1)
+        k = random.randint(0, self.n_targets - 1)
         if random.random() < self.ratio_mutation:
             new_individual = individual[:]
-            sensor = random.choice(self.listSensors)
+            sensor = random.choice(self.list_sensors)
             new_individual[k] = (
                 sensor,
-                random.choice(self.feasible_points[(sensor, self.listTargets[k])]),
+                random.choice(self.feasible_points[(sensor, self.list_targets[k])]),
             )
             return new_individual
         else:
@@ -196,13 +205,13 @@ class NSGA:
         list_distance = [self.cost[(i[0], i[1])] for i in individual_cp]
         return [sum(list_distance) * (-1), max(list_distance) * (-1)]
 
-    def caculator_optimal_function(self, solution):
-        funtion1 = [self.optimal_function(i)[0] for i in solution]
-        funtion2 = [self.optimal_function(i)[1] for i in solution]
-        return [funtion1, funtion2]
+    def calculate_optimal_function(self, solution):
+        function_1 = [self.optimal_function(i)[0] for i in solution]
+        function_2 = [self.optimal_function(i)[1] for i in solution]
+        return [function_1, function_2]
 
     def selection(self):
-        a = self.caculator_optimal_function(solution=self.solution)
+        a = self.calculate_optimal_function(solution=self.solution)
         opt1 = a[0]
         opt2 = a[1]
         front = self.fast_non_dominated_sort(opt1, opt2)
@@ -210,11 +219,11 @@ class NSGA:
         # while len(list_solution_sort) <= self.num_gen:
         for i in front:
             list_solution_sort.extend(i)
-        new_solution = [self.solution[i] for i in list_solution_sort[0 : self.num_gen]]
+        new_solution = [self.solution[i] for i in list_solution_sort[0: self.num_gen]]
         # new_solution = new_solution[0:self.num_gen]
         self.solution = new_solution
 
-        a = self.caculator_optimal_function(solution=self.solution_unfeasible)
+        a = self.calculate_optimal_function(solution=self.solution_infeasible)
         opt1 = a[0]
         opt2 = a[1]
         front = self.fast_non_dominated_sort(opt1, opt2)
@@ -223,10 +232,10 @@ class NSGA:
         for i in front:
             list_solution_sort.extend(i)
         new_solution_unfeasible = [
-            self.solution_unfeasible[i] for i in list_solution_sort[0 : self.num_gen]
+            self.solution_infeasible[i] for i in list_solution_sort[0 : self.num_gen]
         ]
         # new_solution_unfeasible = new_solution_unfeasible[0:self.num_gen]
-        self.solution_unfeasible = new_solution_unfeasible
+        self.solution_infeasible = new_solution_unfeasible
         return 1
 
     def fast_non_dominated_sort(self, values1, values2):
@@ -272,7 +281,12 @@ class NSGA:
         del front[len(front) - 1]
         return front
 
-    def check_sensor(self, individual):  # check dieu kien 1 sensor di toi 2 vi tri
+    def check_sensor(self, individual):
+        """
+        check condition one sensor go to 2 position
+        :param individual:
+        :return:
+        """
         check = True
         flag = {i[0]: -1 for i in individual}
         # print(flag)
@@ -287,13 +301,13 @@ class NSGA:
         return check
 
     def print_final_solution(self, out_path):
-        for i in self.solution_unfeasible:
+        for i in self.solution_infeasible:
             self.fix_sensor(i)
-        self.solution.extend(self.solution_unfeasible)
+        self.solution.extend(self.solution_infeasible)
         for i in self.solution:
             # self.check_contrain_2(i)
             self.check_final(i)
-        a = self.caculator_optimal_function(self.solution)
+        a = self.calculate_optimal_function(self.solution)
         opt1 = a[0]
         opt2 = a[1]
         front = self.fast_non_dominated_sort(opt1, opt2)
@@ -311,10 +325,15 @@ class NSGA:
 
     def fix_sensor(
         self, individual
-    ):  # sua ca the vi pham dieu kien 1 sensor di toi 2 vi tri
+    ):
+        """
+        # fix individual have one sensor go to 2 position
+        :param individual:
+        :return:
+        """
         flag = {i[0]: -1 for i in individual}
         sensors_not_used = []
-        for i in self.listSensors:
+        for i in self.list_sensors:
             try:
                 a = flag[i]
             except:
@@ -326,12 +345,12 @@ class NSGA:
                 sensor = random.choice(sensors_not_used)
                 if (
                     individual[i][1]
-                    not in self.feasible_points[(sensor, self.listTargets[i])]
+                    not in self.feasible_points[(sensor, self.list_targets[i])]
                 ):
                     individual[i] = (
                         sensor,
                         random.choice(
-                            self.feasible_points[(sensor, self.listTargets[i])]
+                            self.feasible_points[(sensor, self.list_targets[i])]
                         ),
                     )
                 else:
@@ -342,9 +361,14 @@ class NSGA:
                 pass
         return -1
 
-    def check_contrain_2(self, individual):  # 2 cam bien khong di cung toi mot vi tri
+    def check_contrain_2(self, individual):
+        """
+        fix individual have two sensor go to 1 position
+        :param individual:
+        :return:
+        """
         a = {}
-        for i in range(0, self.nTargets):
+        for i in range(0, self.n_targets):
             try:
                 k = a[individual[i][1]]
                 if (
@@ -360,7 +384,7 @@ class NSGA:
 
     def check_final(self, individual):
         cover = []
-        for i in range(self.nTargets):
+        for i in range(self.n_targets):
             cover_check = self.cover_matrix[individual[i][1]]
             flag = 0
             for j in cover_check:
@@ -388,15 +412,25 @@ class NSGA:
         return datas
 
     def save_solution(self, path):
+        """
+        save one solution
+        :param path:
+        :return:
+        """
         import pickle
-
         with open(path, "wb") as fp:
             pickle.dump(self.solution[0], fp)
 
     def draw_solution(self, individual, w, h, path, h_lower):
-        import matplotlib.font_manager as font_manager
-
-        #        from matplotlib.patches import FancyArrowPatch
+        """
+        draw a solution
+        :param individual:
+        :param w:
+        :param h:
+        :param path:
+        :param h_lower:
+        :return:
+        """
         font = font_manager.FontProperties(
             family="Times New Roman",
             # weight='bold',
@@ -407,9 +441,9 @@ class NSGA:
         # voronoi_plot_2d(vor, ax)
         ax.set_xlim(0, w)
         ax.set_ylim(h_lower, h)
-        TSClass.draw_rs_list(self.listTargets, ax, c="lightslategray")
-        TSClass.draw_list(self.listTargets, ax, c="r", m="*")
-        TSClass.draw_list(self.listSensors, ax, c="g", m="o")
+        TSClass.draw_rs_list(self.list_targets, ax, c="lightslategray")
+        TSClass.draw_list(self.list_targets, ax, c="r", m="*")
+        TSClass.draw_list(self.list_sensors, ax, c="g", m="o")
         ax.plot([], [], "*", c="r", label="Target".format("*"), linewidth=5)
         ax.plot([], [], "o", c="g", label="Sensor".format("o"), linewidth=5)
 
@@ -446,9 +480,14 @@ class NSGA:
         plt.savefig(path)
 
     def draw_data(self, w, h, path, ratio):
-        import matplotlib.font_manager as font_manager
-
-        #        from matplotlib.patches import FancyArrowPatch
+        """
+        draw dataset
+        :param w:
+        :param h:
+        :param path:
+        :param ratio:
+        :return:
+        """
         font = font_manager.FontProperties(
             family="Times New Roman", weight="normal", style="normal", size=20
         )
@@ -457,8 +496,8 @@ class NSGA:
         ax.set_xlim(0, w)
         ax.set_ylim(-700, h)
         # TSClass.draw_rs_list(self.listTargets, ax, c='lightslategray')
-        TSClass.draw_list(self.listTargets, ax, c="r", m="*")
-        TSClass.draw_list(self.listSensors, ax, c="g", m="o")
+        TSClass.draw_list(self.list_targets, ax, c="r", m="*")
+        TSClass.draw_list(self.list_sensors, ax, c="g", m="o")
         ax.plot([], [], "*", c="r", label="Target".format("*"), markersize=12)
         ax.plot([], [], "o", c="g", label="Sensor".format("o"), markersize=12)
         # =============================================================================
@@ -508,7 +547,7 @@ class NSGA:
                         self.fix_sensor(data)
                         self.solution.append(data)
                     else:
-                        self.solution_unfeasible.append(data)
+                        self.solution_infeasible.append(data)
             self.selection()
             # print(self.caculator_optimal_function(self.solution[0:1]))
             # self.draw_pareto(i)
@@ -517,195 +556,5 @@ class NSGA:
         # out_path = "1.txt"
         self.print_final_solution(out_path)
 
-    def test_feasible_points(self):
-        Point.rs = 20
-        listSensors = []
-        listX = [75, 40, 55, 65, 62.5, 15]
-        listY = [75, 80, 70, 50, 6, 40]
-        for i in range(len(listX)):
-            x = listX[i]
-            y = listY[i]
-            listSensors.append(TSClass.Sensor(i, x, y))
-        listX = [60, 30]
-        listY = [40, 40]
-        listTargets = []
-        for i in range(len(listX)):
-            x = listX[i]
-            y = listY[i]
-            listTargets.append(TSClass.Target(i, x, y))
-        test = NSGA(listSensors=listSensors, listTargets=listTargets)
-        test.get_all_feasible_points()
-        test = NSGA(listSensors=listSensors, listTargets=listTargets)
-        test.get_all_feasible_points()
-        a = list(test.feasible_points.values())
-        b = []
-        for i in a:
-            b.extend(a)
-
-        ax = TSClass.get_ax("Check", 100)
-        # voronoi_plot_2d(vor, ax)
-        ax.set_xlim(0, 100)
-        ax.set_ylim(0, 100)
-        TSClass.draw_list(test.listTargets, ax, c="b")
-        TSClass.draw_list(test.listSensors, ax, c="g")
-        TSClass.draw_rs_list(test.listTargets, ax, c="b")
-        TSClass.draw_list(b, ax, c="r")
-        plt.show()
-
-def find_all_file_excel(path):
-    # path = "/home/toanvd/Documents"
-    all_forders = [
-        os.path.join(path, f)
-        for f in os.listdir(path)
-        if os.path.isdir(os.path.join(path, f))
-    ]
-    all_files = [
-        os.path.join(path, f)
-        for f in os.listdir(path)
-        if os.path.isfile(os.path.join(path, f))
-    ]
-    while len(all_forders) > 0:
-        path = all_forders.pop(0)
-        foders = [
-            os.path.join(path, f)
-            for f in os.listdir(path)
-            if os.path.isdir(os.path.join(path, f))
-        ]
-        files = [
-            os.path.join(path, f)
-            for f in os.listdir(path)
-            if os.path.isfile(os.path.join(path, f))
-        ]
-        all_forders.extend(foders)
-        all_files.extend(files)
-    # file_excels = [i for i in all_files if '.xlsx' in i or '.xls' in i ]
-    return all_files
-
-
 if __name__ == "__main__":
-
-# =============================================================================
-#     path =  '/home/toanvd/Downloads/nsga_II_data/nsga_II/data'
-#     files = find_all_file_excel(path)
-#     files = [i for i in files if 'solution' in i and 'png' not in i]
-#     for file in files:
-#         if 'random' in file:
-#             listSensors = []
-#             listTargets = []
-#             open_file = open(file, "rb")
-#             loaded_list = pickle.load(open_file)
-#             path_file = '/home/toanvd/Downloads/nsga_II_data/nsga_II/data/random_data/200'
-#             Point.rs = int(file.split("_")[-1])
-#             path_sensor = os.path.join(path_file, 'sensor.txt')
-#             path_target = os.path.join(path_file, 'target.txt')
-#             with open(path_sensor,'r') as f:
-#                 _data = f.read().split("\n")
-#             _data = [i for i in _data if len(i)>1]
-#             for i in _data:
-#                 a = i.split("\t")
-#                 listSensors.append(Point(float(a[0]),float(a[1])))
-#
-#             with open(path_target,'r') as f:
-#                 _data = f.read().split("\n")
-#             _data = [i for i in _data if len(i)>1]
-#             for i in _data:
-#                 a = i.split("\t")
-#                 listTargets.append(Point(float(a[0]),float(a[1])))
-#             test = NSGA(listSensors=listSensors, listTargets=listTargets)
-#             out_path = file + "_image.png"
-#             test.draw_solution(loaded_list,6000,6000,out_path,-500)
-#
-#         elif 'cplex' not in file:
-#             Point.rs=50
-#     #file= files[0]
-#             listSensors = []
-#             listTargets = []
-#             open_file = open(file, "rb")
-#             loaded_list = pickle.load(open_file)
-#             path_sensor = file.replace('solution', 'sensor.txt')
-#             path_target = file.replace('solution', 'target.txt')
-#             with open(path_sensor,'r') as f:
-#                 _data = f.read().split("\n")
-#             _data = [i for i in _data if len(i)>1]
-#             for i in _data:
-#                 a = i.split("\t")
-#                 listSensors.append(Point(float(a[0]),float(a[1])))
-#
-#             with open(path_target,'r') as f:
-#                 _data = f.read().split("\n")
-#             _data = [i for i in _data if len(i)>1]
-#             for i in _data:
-#                 a = i.split("\t")
-#                 listTargets.append(Point(float(a[0]),float(a[1])))
-#             test = NSGA(listSensors=listSensors, listTargets=listTargets)
-#             out_path = file + "_image.png"
-#             test.draw_solution(loaded_list,6000,6000,out_path,-500)
-#         else:
-#             pass
-#             Point.rs = 50
-#             listSensors = []
-#             listTargets = []
-#             open_file = open(file, "rb")
-#             loaded_list = pickle.load(open_file)
-#             path_sensor = file.replace('solution', 'sensor.txt')
-#             path_target = file.replace('solution', 'target.txt')
-#             with open(path_sensor,'r') as f:
-#                 _data = f.read().split("\n")
-#             _data = [i for i in _data if len(i)>1]
-#             for i in _data:
-#                 a = i.split("\t")
-#                 listSensors.append(Point(float(a[0]),float(a[1])))
-#
-#             with open(path_target,'r') as f:
-#                 _data = f.read().split("\n")
-#             _data = [i for i in _data if len(i)>1]
-#             for i in _data:
-#                 a = i.split("\t")
-#                 listTargets.append(Point(float(a[0]),float(a[1])))
-#             test = NSGA(listSensors=listSensors, listTargets=listTargets)
-#             out_path = file + "_image.png"
-#             test.draw_solution(loaded_list,6000,6000,out_path,-100)
-# =============================================================================
-# path = 'data/change_N/'
-# =============================================================================
-#     for i in os.listdir(path):
-#         file_path = os.path.join(path, i)
-#         print(file_path)
-#         run_overlap(file_path)
-# =============================================================================
-
-# =============================================================================
-    Point.rs = 5
-    listSensors = []
-    listTargets = []
-    sensor = [(np.random.randint(0,20),np.random.randint(0,20)) for i in range(6)]
-    target = [(np.random.randint(0,20),np.random.randint(0,20)) for i in range(6)]
-    for i in sensor:
-        listSensors.append(Point(float(i[0]),float(i[1])))
-    for i in target:
-        listTargets.append(Point(float(i[0]),float(i[1])))
-# # =============================================================================
-# #     with open("/home/toanvd/Documents/run_cplex/30/30_sensor",'r') as f:
-# #         _data = f.read().split("\n")
-# #     _data = [i for i in _data if len(i)>1]
-# #     for i in sensor:
-# #         a = i.split("\t")
-# #         listSensors.append(Point(float(a[0]),float(a[1])))
-# #
-# #     with open("/home/toanvd/Documents/run_cplex/30/30_target",'r') as f:
-# #         _data = f.read().split("\n")
-# #     _data = [i for i in _data if len(i)>1]
-# #     for i in target:
-# #         a = i.split("\t")
-# #         listTargets.append(Point(float(a[0]),float(a[1])))
-# # =============================================================================
-    for i in range(1):
-        test = NSGA(listSensors=listSensors[0:6], listTargets=listTargets[0:6])
-        test.get_all_feasible_points()
-        test.get_cost_move()
-        test.get_cover_matrix()
-        a = test.heuristic_create_individual()
-        b = test.random_create_individual()
-# =============================================================================
-test.run("1.txt")
-# print(i)
+    pass
