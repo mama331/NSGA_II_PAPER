@@ -560,19 +560,23 @@ if __name__ == "__main__":
     Point.rs = 50
     list_sensors = []
     list_targets = []
-    with open("data/random_data/200/sensor.txt", "r") as f:
-        _data = f.read().split("\n")
-    _data = [data for data in _data if len(data) > 1]
-    for data in _data:
-        a = data.split("\t")
-        list_sensors.append(Point(float(a[0]), float(a[1])))
+    for number_sensor in [50, 100, 150, 200, 250]:
+        path_sensor = f'data/change_N/{number_sensor}/sensor.txt'
+        path_target = f'data/change_N/{number_sensor}/target.txt'
+        output_path = f'rs/change_N/{number_sensor}/rs_{number_sensor}.txt'
+        with open(path_sensor, "r") as f:
+            _data = f.read().split("\n")
+        _data = [data for data in _data if len(data) > 1]
+        for data in _data:
+            a = data.split("\t")
+            list_sensors.append(Point(float(a[0]), float(a[1])))
 
-    with open("data/random_data/200/target.txt", "r") as f:
-        _data = f.read().split("\n")
-    _data = [data for data in _data if len(data) > 1]
-    for data in _data:
-        a = data.split("\t")
-        list_targets.append(Point(float(a[0]), float(a[1])))
-    for i in range(1):
-        test = NSGA(list_sensors=list_sensors, list_targets=list_targets)
-        test.run("1.txt")
+        with open(path_target, "r") as f:
+            _data = f.read().split("\n")
+        _data = [data for data in _data if len(data) > 1]
+        for data in _data:
+            a = data.split("\t")
+            list_targets.append(Point(float(a[0]), float(a[1])))
+        for i in range(1):
+            test = NSGA(list_sensors=list_sensors, list_targets=list_targets)
+            test.run(output_path)

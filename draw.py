@@ -2,16 +2,16 @@ import os
 
 def test_draw():
     path = "data/cplex_data/50/"
-    path_sensor = os.path.join(path, "50_sensor")
-    path_target = os.path.join(path, "50_target")
-    listSensors = []
-    listTargets = []
-    with open(path_sensor, "r") as f:
-        _data = f.read().split("\n")
-    _data = [i for i in _data if len(i) > 1]
-    for i in _data:
-        a = i.split("\t")
-        listSensors.append(Point(float(a[0]), float(a[1])))
+    # path_sensor = os.path.join(path, "50_sensor")
+    # path_target = os.path.join(path, "50_target")
+    # listSensors = []
+    # listTargets = []
+    # with open(path_sensor, "r") as f:
+    #     _data = f.read().split("\n")
+    # _data = [i for i in _data if len(i) > 1]
+    # for i in _data:
+    #     a = i.split("\t")
+    #     listSensors.append(Point(float(a[0]), float(a[1])))
 
     with open(path_target, "r") as f:
         _data = f.read().split("\n")
