@@ -560,10 +560,10 @@ if __name__ == "__main__":
     Point.rs = 50
     list_sensors = []
     list_targets = []
-    for number_sensor in [50, 100, 150, 200, 250]:
-        path_sensor = f'data/change_N/{number_sensor}/sensor.txt'
-        path_target = f'data/change_N/{number_sensor}/target.txt'
-        output_path = f'rs/change_N/{number_sensor}/rs_{number_sensor}.txt'
+    for radius in [30, 40, 50, 60, 70]:
+        path_sensor = f'data/random_data/200/sensor.txt'
+        path_target = f'data/random_data/200/target.txt'
+        output_path = f'rs/change_radius/{radius}/rs_{radius}.txt'
         with open(path_sensor, "r") as f:
             _data = f.read().split("\n")
         _data = [data for data in _data if len(data) > 1]
