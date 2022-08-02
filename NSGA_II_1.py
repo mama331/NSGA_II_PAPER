@@ -558,9 +558,9 @@ class NSGA:
 
 if __name__ == "__main__":
     Point.rs = 50
-    list_sensors = []
-    list_targets = []
-    for number_sensor in [50, 100, 150, 200, 250]:
+    for number_sensor in [100, 150, 200, 250]:
+        list_sensors = []
+        list_targets = []
         path_sensor = f'data/change_N/{number_sensor}/sensor.txt'
         path_target = f'data/change_N/{number_sensor}/target.txt'
         output_path = f'rs/change_N/{number_sensor}/rs_{number_sensor}.txt'
