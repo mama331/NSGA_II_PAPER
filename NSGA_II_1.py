@@ -533,6 +533,7 @@ class NSGA:
         self.get_cover_matrix()
         self.initial()
         i = 0
+        print(self.num_loop)
         while i <= self.num_loop:
             datas = []
             datas = self.run_crossover()
@@ -549,6 +550,7 @@ class NSGA:
                     else:
                         self.solution_infeasible.append(data)
             self.selection()
+
             # print(self.caculator_optimal_function(self.solution[0:1]))
             # self.draw_pareto(i)
             # print(time.time()- start)
@@ -558,25 +560,26 @@ class NSGA:
 
 if __name__ == "__main__":
     Point.rs = 50
-    for number_sensor in [100, 150, 200, 250]:
-        list_sensors = []
-        list_targets = []
-        path_sensor = f'data/change_N/{number_sensor}/sensor.txt'
-        path_target = f'data/change_N/{number_sensor}/target.txt'
-        output_path = f'rs/change_N/{number_sensor}/rs_{number_sensor}.txt'
-        with open(path_sensor, "r") as f:
-            _data = f.read().split("\n")
-        _data = [data for data in _data if len(data) > 1]
-        for data in _data:
-            a = data.split("\t")
-            list_sensors.append(Point(float(a[0]), float(a[1])))
+    for number_sensor in [200]:
+        for n_loop in [100, 200, 300, 400, 500]:
+            list_sensors = []
+            list_targets = []
+            path_sensor = f'data/change_N/{number_sensor}/sensor.txt'
+            path_target = f'data/change_N/{number_sensor}/target.txt'
+            output_path = f'rs_tt/change_N/{number_sensor}/{n_loop}.txt'
+            with open(path_sensor, "r") as f:
+                _data = f.read().split("\n")
+            _data = [data for data in _data if len(data) > 1]
+            for data in _data:
+                a = data.split("\t")
+                list_sensors.append(Point(float(a[0]), float(a[1])))
 
-        with open(path_target, "r") as f:
-            _data = f.read().split("\n")
-        _data = [data for data in _data if len(data) > 1]
-        for data in _data:
-            a = data.split("\t")
-            list_targets.append(Point(float(a[0]), float(a[1])))
-        for i in range(1):
-            test = NSGA(list_sensors=list_sensors, list_targets=list_targets)
-            test.run(output_path)
+            with open(path_target, "r") as f:
+                _data = f.read().split("\n")
+            _data = [data for data in _data if len(data) > 1]
+            for data in _data:
+                a = data.split("\t")
+                list_targets.append(Point(float(a[0]), float(a[1])))
+            for i in range(1):
+                test = NSGA(list_sensors=list_sensors, list_targets=list_targets, num_loop=n_loop)
+                test.run(output_path)
