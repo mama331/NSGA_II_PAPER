@@ -528,7 +528,7 @@ class NSGA:
         plt.savefig(path)
 
     def run(self, out_path):
-        list_logs = [100, 200, 300, 400, 420, 440, 460, 480]
+        list_logs = [100, 200, 300, 350 ,400, 420, 440,450, 460, 480]
         self.get_all_feasible_points()
         self.get_cost_move()
         self.get_cover_matrix()
