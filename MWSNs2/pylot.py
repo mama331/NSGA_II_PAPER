@@ -9,28 +9,28 @@ PointClass.Point.rs = 50
 for _ in range(0, 1):
     sensor = []
     target = []
-    df = pd.ExcelFile("/home/toanvd/Documents/run_100/Thaydoisonode.xlsx")
-    # dfs = pd.read_excel("Thaydoisonode.xlsx", sheet_name="20")
-    dfs = df.parse("200")
-    for i in dfs.sensor:
-        sensor.append(eval(i))
-    for j in dfs.target:
-        target.append(eval(j))
+    # df = pd.ExcelFile("/home/toanvd/Documents/run_100/Thaydoisonode.xlsx")
+    # # dfs = pd.read_excel("Thaydoisonode.xlsx", sheet_name="20")
+    # dfs = df.parse("200")
+    # for i in dfs.sensor:
+    #     sensor.append(eval(i))
+    # for j in dfs.target:
+    #     target.append(eval(j))
 
     # =============================================================================
-    #     with open("/home/toanvd/Documents/run_cplex/60/60_sensor",'r') as f:
-    #         _data = f.read().split("\n")
-    #     _data = [i for i in _data if len(i)>1]
-    #     for i in _data:
-    #         a = i.split("\t")
-    #         sensor.append((float(a[0]),float(a[1])))
-    #
-    #     with open("/home/toanvd/Documents/run_cplex/60/60_target",'r') as f:
-    #         _data = f.read().split("\n")
-    #     _data = [i for i in _data if len(i)>1]
-    #     for i in _data:
-    #         a = i.split("\t")
-    #         target.append((float(a[0]),float(a[1])))
+    with open("data/change_N/50/sensor.txt",'r') as f:
+        _data = f.read().split("\n")
+    _data = [i for i in _data if len(i)>1]
+    for i in _data:
+        a = i.split("\t")
+        sensor.append((float(a[0]),float(a[1])))
+
+    with open("data/change_N/50/target.txt",'r') as f:
+        _data = f.read().split("\n")
+    _data = [i for i in _data if len(i)>1]
+    for i in _data:
+        a = i.split("\t")
+        target.append((float(a[0]),float(a[1])))
     # =============================================================================
 
     np.random.shuffle(sensor)
@@ -62,15 +62,15 @@ for _ in range(0, 1):
     # TSClass.draw_ax(listTargets, listSensors, 'Example')
     # Thêm các target và sensor vào mạng
     WSNs = TVGreedy.TVGreedyWSNs(listTargets, listSensors)
-    print(TVGreedy.main(WSNs))
+    # print(TVGreedy.main(WSNs))
 # =============================================================================
-#     with open('/home/toanvd/Documents/run_cplex/kq_voronoi/60_voronoi',"a") as f:
-#         kq = TVGreedy.main(WSNs)
-#         print(str(kq))
-#         f.write(str(kq[0]))
-#         f.write("\t")
-#         f.write(str(kq[1]))
-#         f.write("\n")
+    with open('rs/tv_greedy/change_N/50.txt',"a") as f:
+        kq = TVGreedy.main(WSNs)
+        print(str(kq))
+        f.write(str(kq[0]))
+        f.write("\t")
+        f.write(str(kq[1]))
+        f.write("\n")
 # =============================================================================
 # tìm cách di chuyển sensor
 # total = TVGreedy.main(WSNs)
