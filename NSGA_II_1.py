@@ -564,13 +564,15 @@ class NSGA:
 
 if __name__ == "__main__":
     Point.rs = 50
-    for number_sensor in [200]:
+    # for number_sensor in [200]:
+    for rs in [30,40,60,70]:
+        Point.rs = rs
         # for n_loop in [100, 200, 300, 400, 500]:
         list_sensors = []
         list_targets = []
-        path_sensor = f'data/change_N/{number_sensor}/sensor.txt'
-        path_target = f'data/change_N/{number_sensor}/target.txt'
-        output_path = f'rs_tt/change_N/{number_sensor}_rerun/'
+        path_sensor = f'data/change_N/200/sensor.txt'
+        path_target = f'data/change_N/200/target.txt'
+        output_path = f'rs_tt/change_r/{rs}/'
         with open(path_sensor, "r") as f:
             _data = f.read().split("\n")
         _data = [data for data in _data if len(data) > 1]
